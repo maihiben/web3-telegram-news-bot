@@ -5,20 +5,31 @@ on:
     - cron: '*/10 * * * *'   # news every 10 minutes
     - cron: '*/2 * * * *'    # activity every 2 minutes
   workflow_dispatch: {}
+  push:
+    branches: [ main ]
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - name: Call news endpoint
-        if: ${{ secrets.NEWS_URL != '' }}
+      - name: Check secrets present
         run: |
-          curl -fsS --max-time 20 "$NEWS_URL" || true
+          if [ -z "${{ secrets.NEWS_URL }}" ]; then echo "NEWS_URL not set (will skip)"; fi
+          if [ -z "${{ secrets.ACTIVITY_URL }}" ]; then echo "ACTIVITY_URL not set (will skip)"; fi
+      - name: Call news endpoint
+        if: ${{ secrets.NEWS_URL && secrets.NEWS_URL != '' }}
+        run: |
+          echo "Pinging news endpoint"
+          curl -A "gh-actions-bot" -fsS --retry 2 --max-time 25 "$NEWS_URL" || echo "news request failed"
         env:
           NEWS_URL: ${{ secrets.NEWS_URL }}
       - name: Call activity endpoint
-        if: ${{ secrets.ACTIVITY_URL != '' }}
+        if: ${{ secrets.ACTIVITY_URL && secrets.ACTIVITY_URL != '' }}
         run: |
-          curl -fsS --max-time 20 "$ACTIVITY_URL" || true
+          echo "Pinging activity endpoint"
+          curl -A "gh-actions-bot" -fsS --retry 2 --max-time 25 "$ACTIVITY_URL" || echo "activity request failed"
         env:
           ACTIVITY_URL: ${{ secrets.ACTIVITY_URL }}
+
