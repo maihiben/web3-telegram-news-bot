@@ -22,4 +22,3 @@ jobs:
           curl -fsS --max-time 20 "$ACTIVITY_URL" || true
         env:
           ACTIVITY_URL: ${{ secrets.ACTIVITY_URL }}
-
