@@ -1,0 +1,7 @@
+{
+  "crons": [
+    { "path": "/api/run-feeds", "schedule": "*/10 * * * *" },
+    { "path": "/api/run-activity", "schedule": "*/1 * * * *" }
+  ]
+}
+

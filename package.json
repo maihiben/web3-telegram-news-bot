@@ -1,0 +1,24 @@
+{
+  "name": "telegram-web3-news-bot",
+  "version": "1.0.0",
+  "description": "A free Telegram bot that posts web3 news from RSS feeds to a channel.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "node-cron": "^3.0.3",
+    "node-telegram-bot-api": "^0.66.0",
+    "pino": "^9.3.2",
+    "rss-parser": "^3.12.0",
+    "@upstash/redis": "^1.28.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
+
